@@ -50,7 +50,6 @@
 				<include name="vsol/view/*"/>
 			</classes>
 			<lib dir="${lib}">
-				<include name="${jdbc}"/>
 				<include name="${jstl}"/>
 			</lib>
 		</war>

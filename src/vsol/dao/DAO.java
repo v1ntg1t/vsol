@@ -10,6 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 
 import vsol.model.Action;
 import vsol.model.Event;
@@ -17,21 +22,20 @@ import vsol.model.Event;
 
 public class DAO {
 
+	private static final String DATA_SOURCE_PATH = "java:comp/env/jdbc/VsolDB";
+
 	private static DAO instance;
 	private static Connection connection;
 
 	
-	private DAO() throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		String url = "jdbc:mysql://localhost:3306/vsol";
-		String user = "root";
-		String password = "rootpassword";
-		connection = DriverManager.getConnection(url, user, password);
-	}
+	private DAO() throws Exception {}
 	
 	public static DAO getInstance() throws Exception {
 		if(instance == null) {
 			instance = new DAO();
+			Context context = new InitialContext();
+			DataSource source = (DataSource)context.lookup(DATA_SOURCE_PATH);
+			connection = source.getConnection();
 		}
 		return instance;	
 	}
