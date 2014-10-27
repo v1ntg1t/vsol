@@ -85,7 +85,7 @@ public class DAO {
 		Statement st = connection.createStatement();
 		st.executeUpdate("INSERT events(season, day, isDuringGeneration, description) values (" 
 				+ event.getSeason() + ", " + event.getDay() + ", " 
-				+ (event.isDuringGeneration() ? "1" : "0") + ", '" 
+				+ (event.getDuringGeneration() ? "1" : "0") + ", '" 
 				+ event.getDescription() + "')");
 		st.close();
 	}
@@ -94,7 +94,7 @@ public class DAO {
 		Statement st = connection.createStatement();
 		st.executeUpdate("UPDATE events SET season = " + event.getSeason() 
 				+ ", day = " + event.getDay() 
-				+ ", isDuringGeneration = " + (event.isDuringGeneration() ? 1 : 0) 
+				+ ", isDuringGeneration = " + (event.getDuringGeneration() ? 1 : 0) 
 				+ ", description = '" + event.getDescription() 
 				+ "' WHERE id = " + event.getId() + ";");
 		st.close();

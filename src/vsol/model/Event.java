@@ -9,7 +9,7 @@ public class Event {
 	private long id;
 	private byte season;
 	private short day;
-	private boolean isDuringGeneration;
+	private boolean duringGeneration;
 	private String description;
 	private List<Action> actions;
 	
@@ -62,12 +62,12 @@ public class Event {
 		this.day = day;
 	}
 	
-	public boolean isDuringGeneration() {
-		return isDuringGeneration;
+	public boolean getDuringGeneration() {
+		return duringGeneration;
 	}
 	
 	public void setDuringGeneration(boolean isDuringGeneration) {
-		this.isDuringGeneration = isDuringGeneration;
+		duringGeneration = isDuringGeneration;
 	}
 	
 	public String getDescription() {
