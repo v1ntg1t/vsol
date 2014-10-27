@@ -79,5 +79,17 @@ public class MainFrame {
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
+	
+	
+	public int getEventsSize() {
+		return events.size();
+	}
+	
+	public Event getEvent(int index) {
+		if (0 <= index && index < getEventsSize()) {
+			return events.get(index);
+		}
+		return null;
+	}
 
 }

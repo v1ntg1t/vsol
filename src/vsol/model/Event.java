@@ -85,5 +85,17 @@ public class Event {
 	public void setActions(List<Action> actions) {
 		this.actions = actions;
 	}
+	
+	
+	public int getActionsSize() {
+		return actions.size();
+	}
+	
+	public Action getAction(int index) {
+		if (0 <= index && index < getActionsSize()) {
+			return actions.get(index);
+		}
+		return null;
+	}
 
 }

@@ -35,32 +35,32 @@
 						<td colspan="4"><input name="addEvent" type="submit" value="добавить новое событие" /></td>
 					</tr>
 				</form>
-				<% for(int i = 0; i < frame.getEvents().size(); i++) { %>
+				<% for(int i = 0; i < frame.getEventsSize(); i++) { %>
 					<form action="/vsol/main" method="POST" >
-						<input name="eventId" type="hidden" value="<% out.print( frame.getEvents().get(i).getId() ); %>" />
+						<input name="eventId" type="hidden" value="<% out.print( frame.getEvent(i).getId() ); %>" />
 						<tr>
-							<td><input name="season" type="text" size="2" maxlength="2" value="<% out.print( frame.getEvents().get(i).getSeason() ); %>" /></td>
-							<td><input name="day" type="text" size="3" maxlength="3" value="<% out.print( frame.getEvents().get(i).getDay() ); %>" /></td>
-							<td><input name="isDuringGeneration" type="checkbox" <% out.print( frame.getEvents().get(i).isDuringGeneration() ? "checked " : ""); %>/></td>
-							<td><input name="description" type="text" value="<% out.print( frame.getEvents().get(i).getDescription() ); %>" /></td>
+							<td><input name="season" type="text" size="2" maxlength="2" value="<% out.print( frame.getEvent(i).getSeason() ); %>" /></td>
+							<td><input name="day" type="text" size="3" maxlength="3" value="<% out.print( frame.getEvent(i).getDay() ); %>" /></td>
+							<td><input name="isDuringGeneration" type="checkbox" <% out.print( frame.getEvent(i).isDuringGeneration() ? "checked " : ""); %>/></td>
+							<td><input name="description" type="text" value="<% out.print( frame.getEvent(i).getDescription() ); %>" /></td>
 							<td colspan="3"><input name="updateEvent" type="submit" value="обновить событие" /></td>
 							<td><input name="deleteEvent" type="submit" value="удалить событие" /></td>
 						</tr>
 					</form>
-					<% for(int j = 0; j < frame.getEvents().get(i).getActions().size(); j++) { %>
+					<% for(int j = 0; j < frame.getEvent(i).getActionsSize(); j++) { %>
 						<form action="/vsol/main" method="POST" >
-							<input name="actionId" type="hidden" value="<% out.print( frame.getEvents().get(i).getActions().get(j).getId() ); %>" />
+							<input name="actionId" type="hidden" value="<% out.print( frame.getEvent(i).getAction(j).getId() ); %>" />
 							<tr>
 								<td colspan="4"><input name="updateAction" type="submit" value="обновить действие" /></td>
-								<td><input name="description" type="text" value="<% out.print( frame.getEvents().get(i).getActions().get(j).getDescription() ); %>" /></td>
-								<td><input name="profit" type="text" size="10" maxlength="10" value="<% out.print( frame.getEvents().get(i).getActions().get(j).getProfit() ); %>" /></td>
-								<td><% cashMoney += frame.getEvents().get(i).getActions().get(j).getProfit(); out.print(cashMoney); %></td>
+								<td><input name="description" type="text" value="<% out.print( frame.getEvent(i).getAction(j).getDescription() ); %>" /></td>
+								<td><input name="profit" type="text" size="10" maxlength="10" value="<% out.print( frame.getEvent(i).getAction(j).getProfit() ); %>" /></td>
+								<td><% cashMoney += frame.getEvent(i).getAction(j).getProfit(); out.print(cashMoney); %></td>
 								<td><input name="deleteAction" type="submit" value="удалить действие" /></td>
 							</tr>
 						</form>
 					<% } %>
 					<form action="/vsol/main" method="POST" >
-						<input name="eventId" type="hidden" value="<% out.print( frame.getEvents().get(i).getId() ); %>" />
+						<input name="eventId" type="hidden" value="<% out.print( frame.getEvent(i).getId() ); %>" />
 						<tr>
 							<td colspan="4"><input name="addAction" type="submit" value="добавить действие" /></td>
 							<td><input name="newActionDescription" type="text" value="описание действия" /></td>
