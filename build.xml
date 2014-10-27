@@ -42,9 +42,10 @@
 		<war destfile="${war}" webxml="res/web/WEB-INF/web.xml">
 			<fileset dir="res/web"/>
 			<classes dir="${classes}">
+				<include name="vsol/dao/*"/>
 				<include name="vsol/model/*"/>
-				<include name="vsol/model/dao/*"/>
-				<include name="vsol/control/*"/>
+				<include name="vsol/view/*"/>
+				<include name="vsol/controller/*"/>
 			</classes>
 <!--			
 			<lib dir="${lib}">
@@ -60,9 +61,10 @@
 				destdir="${classes}" 
 				encoding="${encoding}" 
 		>
-			<include name="vsol/model/*.java"/>
-			<include name="vsol/model/dao/*.java"/>
-			<include name="vsol/control/*.java"/>
+			<include name="vsol/dao/*"/>
+			<include name="vsol/model/*"/>
+			<include name="vsol/view/*"/>
+			<include name="vsol/controller/*"/>
 		</javac>
 	</target>
 

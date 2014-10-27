@@ -15,6 +15,27 @@ public class Event {
 	
 	
 	public Event() {}
+
+	public Event(byte season, short day, boolean isDuringGeneration, String description) {
+		this();
+		setSeason(season);
+		setDay(day);
+		setDuringGeneration(isDuringGeneration);
+		setDescription(description);
+	}
+	
+	public Event(long id, byte season, short day, boolean isDuringGeneration, String description) {
+		this(season, day, isDuringGeneration, description);
+		setId(id);
+	}
+
+	public Event(String season, String day, String isDuringGeneration, String description) {
+		this();
+		setSeason(Byte.parseByte(season));
+		setDay(Short.parseShort(day));
+		setDuringGeneration((isDuringGeneration != null ? true : false));
+		setDescription(description);
+	}
 	
 	
 	public long getId() {

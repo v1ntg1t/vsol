@@ -10,6 +10,17 @@ public class Action {
 	
 	public Action() {}
 	
+	public Action(String description, int profit) {
+		this();
+		setDescription(description);
+		setProfit(profit);
+	}
+	
+	public Action(long id, String description, int profit) {
+		this(description, profit);
+		setId(id);
+	}
+	
 	
 	public long getId() {
 		return id;

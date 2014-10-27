@@ -12,7 +12,7 @@
 </welcome-file-list>
 <servlet>
 	<servlet-name>Main</servlet-name>
-	<servlet-class>vsol.control.Main</servlet-class>
+	<servlet-class>vsol.controller.Main</servlet-class>
 </servlet>
 <servlet-mapping>
 	<servlet-name>Main</servlet-name>
