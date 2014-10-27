@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<h1>Планировщик Финансов</h1>
-		<h2>Команда №<% out.print(frame.getTeamId()); %>, $<% out.print(frame.getCashMoney()); %></h2>
+		<h2>Команда №<% out.print(frame.getTeamId()); %>, $<% out.print(cashMoney); %></h2>
 		<h3>Сезон <% out.print(frame.getCurrentSeason()); %>, день <% out.print(frame.getCurrentDay()); %></h3>
 		<table>
 			<thead>
@@ -41,7 +41,7 @@
 						<tr>
 							<td><input name="season" type="text" size="2" maxlength="2" value="<% out.print( frame.getEvent(i).getSeason() ); %>" /></td>
 							<td><input name="day" type="text" size="3" maxlength="3" value="<% out.print( frame.getEvent(i).getDay() ); %>" /></td>
-							<td><input name="isDuringGeneration" type="checkbox" <% out.print( frame.getEvent(i).isDuringGeneration() ? "checked " : ""); %>/></td>
+							<td><input name="isDuringGeneration" type="checkbox" <% out.print( frame.getEvent(i).isDuringGeneration() ? "checked " : "" ); %>/></td>
 							<td><input name="description" type="text" value="<% out.print( frame.getEvent(i).getDescription() ); %>" /></td>
 							<td colspan="3"><input name="updateEvent" type="submit" value="обновить событие" /></td>
 							<td><input name="deleteEvent" type="submit" value="удалить событие" /></td>

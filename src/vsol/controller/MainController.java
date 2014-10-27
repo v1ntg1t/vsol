@@ -1,15 +1,7 @@
 package vsol.controller;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
-import java.net.URL;
-import java.net.URLConnection;
 
 import java.util.List;
 
@@ -22,18 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import vsol.Const;
+
 import vsol.dao.DAO;
 
 import vsol.model.Action;
 import vsol.model.Event;
 
+import vsol.util.HttpUtil;
+
 import vsol.view.MainFrame;
 
 
 public class MainController extends HttpServlet {
-
-	public static final String ENCODING = "UTF-8";
-
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -48,8 +41,8 @@ public class MainController extends HttpServlet {
 
 	public void processRequest(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
-		req.setCharacterEncoding(ENCODING);
-		resp.setCharacterEncoding(ENCODING);
+		req.setCharacterEncoding(Const.ENCODING);
+		resp.setCharacterEncoding(Const.ENCODING);
 
 		DAO dao = null;
 		try {
@@ -59,7 +52,7 @@ public class MainController extends HttpServlet {
 		int teamId = 23354;
 		int cashMoney = 0;
 		String url = "http://virtualsoccer.ru/roster.php?num=" + teamId;
-		String content = getHttpContent(url);
+		String content = HttpUtil.getHttpContent(url);
 		Pattern pattern = Pattern.compile("Финансы: <b>([^$]+)");
 		Matcher matcher = pattern.matcher(content);
 		if(matcher.find()) {
@@ -70,7 +63,7 @@ public class MainController extends HttpServlet {
 		byte currentSeason = 1;
 		short currentDay = 1;
 		url = "http://virtualsoccer.ru";
-		content = getHttpContent(url);
+		content = HttpUtil.getHttpContent(url);
 		pattern = Pattern.compile("Сезон: <b>([1-9][0-9]+)</b>, День: <b>([1-9][0-9]*)</b>");
 		matcher = pattern.matcher(content);
 		if(matcher.find()) {
@@ -127,42 +120,6 @@ public class MainController extends HttpServlet {
 		MainFrame mainFrame = new MainFrame(currentSeason, currentDay, teamId, cashMoney, events);
 		req.setAttribute("frame", mainFrame);
 		req.getRequestDispatcher("main.jsp").forward(req, resp);
-	}
-	
-
-	private String getHttpContent(String urlPath, String... parameters) {
-		int connectionTries = 8;
-		StringBuilder sb = new StringBuilder();
-		for (int currentTry = 0; currentTry < connectionTries; currentTry++) {
-			try {
-				URL url = new URL(urlPath);
-				URLConnection uc = url.openConnection();
-				addParameters(uc, parameters);
-				InputStream is = uc.getInputStream(); 
-				InputStreamReader isr = new InputStreamReader(is, ENCODING);
-				BufferedReader br = new BufferedReader(isr);
-				String line;
-				sb = new StringBuilder();
-				while ( (line = br.readLine()) != null ) {
-					sb.append(line);
-					sb.append("\n");
-				}
-				br.close();
-				break;
-			} catch(IOException e) {}
-		}
-		return sb.toString();
-	}
-
-	private void addParameters(URLConnection uc, String... parameters) 
-			throws IOException {
-		uc.setDoOutput(true);
-		OutputStream os = uc.getOutputStream();
-		OutputStreamWriter out = new OutputStreamWriter(os, ENCODING);
-		for(String parameter : parameters) {
-	        out.write(parameter);
-		}
-        out.close();
 	}
 
 }
