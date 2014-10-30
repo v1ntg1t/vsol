@@ -13,12 +13,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+
 
 import vsol.Const;
 
 import vsol.dao.DAO;
 
-import vsol.model.Action;
+import vsol.model.ManagerAction;
 import vsol.model.Event;
 
 import vsol.util.HttpUtil;
@@ -26,23 +33,11 @@ import vsol.util.HttpUtil;
 import vsol.view.MainFrame;
 
 
-public class MainController extends HttpServlet {
+public class MainController extends Action {
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		processRequest(req, resp);
-	}
-
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		processRequest(req, resp);
-	}
-
-
-	public void processRequest(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
-		req.setCharacterEncoding(Const.ENCODING);
-		resp.setCharacterEncoding(Const.ENCODING);
+	public ActionForward execute(ActionMapping mapping, ActionForm form, 
+			HttpServletRequest req, HttpServletResponse resp) 
+			throws IOException, ServletException {
 
 		DAO dao = null;
 		try {
@@ -98,28 +93,63 @@ public class MainController extends HttpServlet {
 				String newActionDescription = req.getParameter("newActionDescription");
 				int newActionProfit = Integer.parseInt(req.getParameter("newActionProfit"));
 				long eventId = Long.parseLong(req.getParameter("eventId"));
-				Action newAction = new Action(newActionDescription, newActionProfit);
-				dao.addAction(newAction, eventId);
+				ManagerAction newManagerAction = new ManagerAction(newActionDescription, newActionProfit);
+				dao.addManagerAction(newManagerAction, eventId);
 			} else if (req.getParameter("updateAction") != null) {
 				long id = Long.parseLong(req.getParameter("actionId"));
 				String description = req.getParameter("description");
 				int profit = Integer.parseInt(req.getParameter("profit"));
-				Action action = new Action(id, description, profit);
-				dao.updateAction(action);
+				ManagerAction managerAction = new ManagerAction(id, description, profit);
+				dao.updateManagerAction(managerAction);
 			} else if (req.getParameter("deleteAction") != null) {
 				long actionId = Long.parseLong(req.getParameter("actionId"));
-				dao.deleteAction(actionId);
+				dao.deleteManagerAction(actionId);
 			}
 		} catch (Exception e) {}
 
 		List<Event> events = null;
 		try {
 			events = dao.getEvents(currentSeason, currentDay);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
 
-		MainFrame mainFrame = new MainFrame(currentSeason, currentDay, teamId, cashMoney, events);
+
+		MainFrame mainForm = (MainFrame)form;
+		mainForm.setCurrentSeason(currentSeason);
+		mainForm.setCurrentDay(currentDay);
+		mainForm.setTeamId(teamId);
+		mainForm.setCashMoney(cashMoney);
+		mainForm.setEvents(events);
+		return mapping.findForward("success");
+/*
+		MainFrame mainFrame = new MainFrame(currentSeason, currentDay, teamId, 
+				cashMoney, events);
 		req.setAttribute("frame", mainFrame);
 		req.getRequestDispatcher("main.jsp").forward(req, resp);
+*/
+/*
+		String profession = null;
+		String target = "success";
+		Long professionId = null;
+		if (lookupForm != null) {
+			try {
+				professionId = Long.parseLong(lookupForm.getProfessionId());
+				profession = getProfession(professionId);
+			} catch (Exception e) {}
+		}
+		if (profession == null) {
+			target = "failure";
+			ActionErrors actionErrors = new ActionErrors();
+			ActionMessage am = new ActionMessage(
+					"errors.lookup.unknown", professionId);
+			actionErrors.add(ActionErrors.GLOBAL_MESSAGE, am);
+			saveErrors(request, actionErrors);
+		} else {
+			lookupForm.setProfessionName(profession);
+		}
+		return (mapping.findForward(target));
+*/		
 	}
 
 }

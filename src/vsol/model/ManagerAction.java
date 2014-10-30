@@ -1,22 +1,22 @@
 package vsol.model;
 
 
-public class Action {
+public class ManagerAction {
 
 	private long id;
 	private int profit;
 	private String description;
 	
 	
-	public Action() {}
+	public ManagerAction() {}
 	
-	public Action(String description, int profit) {
+	public ManagerAction(String description, int profit) {
 		this();
 		setDescription(description);
 		setProfit(profit);
 	}
 	
-	public Action(long id, String description, int profit) {
+	public ManagerAction(long id, String description, int profit) {
 		this(description, profit);
 		setId(id);
 	}

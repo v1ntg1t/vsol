@@ -16,7 +16,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 
-import vsol.model.Action;
+import vsol.model.ManagerAction;
 import vsol.model.Event;
 
 
@@ -41,7 +41,8 @@ public class DAO {
 	}
 	
 	
-	public List<Event> getEvents(byte currentSeason, short currentDay) throws Exception {
+	public List<Event> getEvents(byte currentSeason, short currentDay) 
+			throws Exception {
 		List<Event> events = new ArrayList<Event>();
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery(
@@ -56,7 +57,7 @@ public class DAO {
 			event.setDay(rs.getShort("day"));
 			event.setDuringGeneration(rs.getBoolean("isDuringGeneration"));
 			event.setDescription(rs.getString("description"));
-			event.setActions(getActions(event));
+			event.setManagerActions(getManagerActions(event));
 			events.add(event);
 		}
 		rs.close();
@@ -71,7 +72,7 @@ public class DAO {
 	public Event getEvent(long id) throws Exception {
 		Event event = null;
 		Statement st = connection.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM events WHERE id = " + id + ";");
+		ResultSet rs = st.executeQuery("SELECT * FROM events WHERE id = " + id);
 		rs.next();
 		event = new Event();
 		event.setId(id);
@@ -79,7 +80,7 @@ public class DAO {
 		event.setDay(rs.getShort("day"));
 		event.setDuringGeneration(rs.getBoolean("isDuringGeneration"));
 		event.setDescription(rs.getString("description"));
-		event.setActions(getActions(event));
+		event.setManagerActions(getManagerActions(event));
 		rs.close();
 		st.close();
 		return event;
@@ -87,8 +88,9 @@ public class DAO {
 
 	public void addEvent(Event event) throws Exception {
 		Statement st = connection.createStatement();
-		st.executeUpdate("INSERT events(season, day, isDuringGeneration, description) values (" 
-				+ event.getSeason() + ", " + event.getDay() + ", " 
+		st.executeUpdate(
+				"INSERT events(season, day, isDuringGeneration, description) "
+				+ "values (" + event.getSeason() + ", " + event.getDay() + ", " 
 				+ (event.getDuringGeneration() ? "1" : "0") + ", '" 
 				+ event.getDescription() + "')");
 		st.close();
@@ -96,15 +98,16 @@ public class DAO {
 	
 	public void updateEvent(Event event) throws Exception {
 		Statement st = connection.createStatement();
-		st.executeUpdate("UPDATE events SET season = " + event.getSeason() 
-				+ ", day = " + event.getDay() 
-				+ ", isDuringGeneration = " + (event.getDuringGeneration() ? 1 : 0) 
+		st.executeUpdate("UPDATE events SET season = " + event.getSeason() + 
+				", day = " + event.getDay() + 
+				",isDuringGeneration = " + (event.getDuringGeneration() ? 1 : 0) 
 				+ ", description = '" + event.getDescription() 
 				+ "' WHERE id = " + event.getId() + ";");
 		st.close();
 	}
 
-	public void deleteOldEvents(byte currentSeason, short currentDay) throws Exception {
+	public void deleteOldEvents(byte currentSeason, short currentDay) 
+			throws Exception {
 		List<Event> events = getEvents();
 		for(Event event : events) {
 			if (	event.getSeason() < currentSeason || (
@@ -118,58 +121,61 @@ public class DAO {
 	}
 	
 	public void deleteEvent(Event event) throws Exception {
-		List<Action> actions = event.getActions();
-		for (Action action : actions) {
-			deleteAction(action);
+		List<ManagerAction> managerActions = event.getManagerActions();
+		for (ManagerAction managerAction : managerActions) {
+			deleteManagerAction(managerAction);
 		}
 		Statement st = connection.createStatement();
-		st.executeUpdate("DELETE FROM events WHERE id = " + event.getId() + ";");
+		st.executeUpdate("DELETE FROM events WHERE id = " + event.getId());
 		st.close();
 	}
 	
-	public List<Action> getActions(Event event) throws Exception {
-		List<Action> actions = new ArrayList<Action>();
+	public List<ManagerAction> getManagerActions(Event event) throws Exception {
+		List<ManagerAction> managerActions = new ArrayList<ManagerAction>();
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery("SELECT * FROM actions where eventId = " 
 				+ event.getId());
 		while (rs.next()) {
-			Action action = new Action();
-			action.setId(rs.getLong("id"));
-			action.setProfit(rs.getInt("profit"));
-			action.setDescription(rs.getString("description"));
-			actions.add(action);
+			ManagerAction managerAction = new ManagerAction();
+			managerAction.setId(rs.getLong("id"));
+			managerAction.setProfit(rs.getInt("profit"));
+			managerAction.setDescription(rs.getString("description"));
+			managerActions.add(managerAction);
 		}
 		rs.close();
 		st.close();
-		return actions;
+		return managerActions;
 	}
 	
-	public void addAction(Action action, long eventId) throws Exception {
+	public void addManagerAction(ManagerAction managerAction, long eventId) 
+			throws Exception {
 		Statement st = connection.createStatement();
-		st.executeUpdate("INSERT actions(description, profit, eventId) values ('" 
-				+ action.getDescription() + "', " + action.getProfit() + ", " 
-				+ eventId + ")");
+		st.executeUpdate("INSERT actions(description, profit, eventId) " + 
+				"values ('" + managerAction.getDescription() + "', " + 
+				managerAction.getProfit() + ", " + eventId + ")");
 		st.close();
 	}
 	
-	public void updateAction(Action action) throws Exception {
+	public void updateManagerAction(ManagerAction managerAction) 
+			throws Exception {
 		Statement st = connection.createStatement();
-		st.executeUpdate(
-				"UPDATE actions SET description = '" + action.getDescription() 
-				+ "', profit = " + action.getProfit() 
-				+ " WHERE id = " + action.getId()
+		st.executeUpdate("UPDATE actions SET description = '" 
+				+ managerAction.getDescription() 
+				+ "', profit = " + managerAction.getProfit() 
+				+ " WHERE id = " + managerAction.getId()
 		);
 		st.close();
 	}
 
-	public void deleteAction(long id) throws Exception {
+	public void deleteManagerAction(long id) throws Exception {
 		Statement st = connection.createStatement();
 		st.executeUpdate("DELETE FROM actions WHERE id = " + id + ";");
 		st.close();
 	}
 	
-	public void deleteAction(Action action) throws Exception {
-		deleteAction(action.getId());
+	public void deleteManagerAction(ManagerAction managerAction) 
+			throws Exception {
+		deleteManagerAction(managerAction.getId());
 	}
 
 }

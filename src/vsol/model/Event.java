@@ -11,7 +11,7 @@ public class Event {
 	private short day;
 	private boolean duringGeneration;
 	private String description;
-	private List<Action> actions;
+	private List<ManagerAction> managerActions;
 	
 	
 	public Event() {}
@@ -78,22 +78,22 @@ public class Event {
 		this.description = description;
 	}
 	
-	public List<Action> getActions() {
-		return actions;
+	public List<ManagerAction> getManagerActions() {
+		return managerActions;
 	}
 	
-	public void setActions(List<Action> actions) {
-		this.actions = actions;
+	public void setManagerActions(List<ManagerAction> managerActions) {
+		this.managerActions = managerActions;
 	}
 	
 	
-	public int getActionsSize() {
-		return actions.size();
+	public int getManagerActionsSize() {
+		return managerActions.size();
 	}
 	
-	public Action getAction(int index) {
-		if (0 <= index && index < getActionsSize()) {
-			return actions.get(index);
+	public ManagerAction getManagerAction(int index) {
+		if (0 <= index && index < getManagerActionsSize()) {
+			return managerActions.get(index);
 		}
 		return null;
 	}

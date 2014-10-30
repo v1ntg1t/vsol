@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts-config PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+		"http://struts.apache.org/dtds/struts-config_1_3.dtd"
+>
+
+<struts-config>
+
+	<form-beans>
+		<form-bean name="frame" type="vsol.view.MainFrame" />
+	</form-beans>
+	
+	<action-mappings>
+		<action path="/main"
+				type="vsol.controller.MainController"
+				name="frame"
+		>
+			<forward name="success" path="/main.jsp" />
+		</action>
+	</action-mappings>
+<!--	
+	<message-resources parameter="students.ApplicationResources" />
+-->	
+	
+</struts-config>

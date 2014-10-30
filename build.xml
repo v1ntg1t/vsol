@@ -20,7 +20,7 @@
 
 	<path id="web.classpath">
 		<fileset dir="${lib}">
-			<include name="${servlet}"/>
+			<include name="*.jar"/>
 		</fileset>
 	</path>
 
@@ -50,7 +50,7 @@
 				<include name="vsol/view/*"/>
 			</classes>
 			<lib dir="${lib}">
-				<include name="${jstl}"/>
+				<exclude name="${servlet}"/>
 			</lib>
 		</war>
 	</target>

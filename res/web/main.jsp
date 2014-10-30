@@ -24,7 +24,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<form action="/vsol/main" method="POST" >
+				<form action="/vsol/main.do" method="POST" >
 					<tr>
 						<td><input name="newSeason" type="text" size="2" maxlength="2" value="<c:out value="${frame.currentSeason}" />" /></td>
 						<td><input name="newDay" type="text" size="3" maxlength="3" value="<c:out value="${frame.currentDay}" />" /></td>
@@ -34,7 +34,7 @@
 					</tr>
 				</form>
 				<c:forEach var="event" items="${frame.events}">
-					<form action="/vsol/main" method="POST" >
+					<form action="/vsol/main.do" method="POST" >
 						<input name="eventId" type="hidden" value="<c:out value="${event.id}" />" />
 						<tr>
 							<td><input name="season" type="text" size="2" maxlength="2" value="<c:out value="${event.season}" />" /></td>
@@ -45,8 +45,8 @@
 							<td><input name="deleteEvent" type="submit" value="удалить событие" /></td>
 						</tr>
 					</form>
-					<c:forEach var="action" items="${event.actions}">
-						<form action="/vsol/main" method="POST" >
+					<c:forEach var="action" items="${event.managerActions}">
+						<form action="/vsol/main.do" method="POST" >
 							<input name="actionId" type="hidden" value="<c:out value="${action.id}" />" />
 							<tr>
 								<td colspan="4"><input name="updateAction" type="submit" value="обновить действие" /></td>
@@ -58,7 +58,7 @@
 							</tr>
 						</form>
 					</c:forEach>
-					<form action="/vsol/main" method="POST" >
+					<form action="/vsol/main.do" method="POST" >
 						<input name="eventId" type="hidden" value="<c:out value="${event.id}" />" />
 						<tr>
 							<td colspan="4"><input name="addAction" type="submit" value="добавить действие" /></td>
@@ -67,7 +67,7 @@
 						</tr>
 					</form>
 				</c:forEach>
-				<form action="/vsol/main" method="POST" >
+				<form action="/vsol/main.do" method="POST" >
 					<tr>
 						<td><input name="newSeason" type="text" size="2" maxlength="2" value="<c:out value="${frame.currentSeason}" />" /></td>
 						<td><input name="newDay" type="text" size="3" maxlength="3" value="<c:out value="${frame.currentDay}" />" /></td>
